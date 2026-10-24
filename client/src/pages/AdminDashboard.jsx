@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-import { FaClipboardList, FaCheckCircle, FaClock, FaSpinner, FaUsers, FaTrash, FaUserPlus } from "react-icons/fa";
+import { FaClipboardList, FaCheckCircle, FaClock, FaSpinner, FaUsers, FaTrash, FaUserPlus, FaComments } from "react-icons/fa";
 import Charts from "../components/Charts";
 import api from "../api/axios";
 import { getUser } from "../utils/auth";
@@ -81,20 +81,41 @@ function AdminDashboard() {
 
       <h4 className="fw-bold text-secondary mb-3">Quick Actions</h4>
       <div className="row g-3 mb-5">
-        <div className={isSuperAdmin ? "col-md-3" : "col-md-4"}>
-          <button className="btn btn-primary-custom w-100 py-3 d-flex flex-column align-items-center" onClick={() => navigate("/complaints")}><FaClipboardList size={24} className="mb-2" /> Manage Complaints</button>
+        <div className="col-lg-3 col-md-6">
+          <button className="btn btn-primary-custom w-100 py-3 d-flex flex-column align-items-center h-100" onClick={() => navigate("/complaints")}>
+            <FaClipboardList size={24} className="mb-2" /> Manage Complaints
+          </button>
         </div>
-        <div className={isSuperAdmin ? "col-md-3" : "col-md-4"}>
-          <button className="btn btn-outline-primary w-100 py-3 d-flex flex-column align-items-center fw-bold" onClick={() => navigate("/users")}><FaUsers size={24} className="mb-2" /> View Users ({stats.users})</button>
+        <div className="col-lg-3 col-md-6">
+          <button className="btn btn-outline-primary w-100 py-3 d-flex flex-column align-items-center fw-bold h-100" onClick={() => navigate("/users")}>
+            <FaUsers size={24} className="mb-2" /> View Users ({stats.users})
+          </button>
         </div>
-        {isSuperAdmin && (
-          <div className="col-md-3">
-            <button className="btn btn-success-custom w-100 py-3 d-flex flex-column align-items-center" onClick={() => navigate("/users")}><FaUserPlus size={24} className="mb-2" /> Create Admin</button>
+        <div className="col-lg-3 col-md-6">
+          <button className="btn btn-outline-info text-dark w-100 py-3 d-flex flex-column align-items-center fw-bold h-100" onClick={() => navigate("/admin-chats")}>
+            <FaComments size={24} className="mb-2" /> Support Chats
+          </button>
+        </div>
+        {isSuperAdmin ? (
+          <div className="col-lg-3 col-md-6">
+            <button className="btn btn-success-custom w-100 py-3 d-flex flex-column align-items-center h-100" onClick={() => navigate("/users")}>
+              <FaUserPlus size={24} className="mb-2" /> Create Admin
+            </button>
+          </div>
+        ) : (
+          <div className="col-lg-3 col-md-6">
+            <button className="btn btn-outline-danger w-100 py-3 d-flex flex-column align-items-center fw-bold h-100" onClick={() => navigate("/deleted-complaints")}>
+              <FaTrash size={24} className="mb-2" /> Deleted History
+            </button>
           </div>
         )}
-        <div className={isSuperAdmin ? "col-md-3" : "col-md-4"}>
-          <button className="btn btn-outline-danger w-100 py-3 d-flex flex-column align-items-center fw-bold" onClick={() => navigate("/deleted-complaints")}><FaTrash size={24} className="mb-2" /> Deleted History</button>
-        </div>
+        {isSuperAdmin && (
+          <div className="col-lg-3 col-md-6">
+            <button className="btn btn-outline-danger w-100 py-3 d-flex flex-column align-items-center fw-bold h-100" onClick={() => navigate("/deleted-complaints")}>
+              <FaTrash size={24} className="mb-2" /> Deleted History
+            </button>
+          </div>
+        )}
       </div>
 
       <div className="mt-5">

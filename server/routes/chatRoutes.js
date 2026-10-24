@@ -3,20 +3,15 @@ const router = express.Router();
 const { protect } = require("../middleware/authMiddleware");
 const { isAdmin } = require("../middleware/adminMiddleware");
 const {
-  sendMessage,
-  getMyChat,
-  getAllChatsAdmin,
-  getChatWithUser,
+  sendMessage, getMyChat, getAllChatsAdmin, getChatWithUser, editMessage, deleteMessage
 } = require("../controllers/chatController");
 
-// User aur Admin dono message bhej sakte hain
 router.post("/", protect, sendMessage);
-
-// User apni chat dekhe
 router.get("/my", protect, getMyChat);
-
-// Admin routes
 router.get("/admin", protect, isAdmin, getAllChatsAdmin);
 router.get("/admin/:userId", protect, isAdmin, getChatWithUser);
+
+router.put("/:id", protect, editMessage);
+router.delete("/:id", protect, deleteMessage);
 
 module.exports = router;

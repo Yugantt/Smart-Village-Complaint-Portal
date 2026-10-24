@@ -56,6 +56,7 @@ function Navbar() {
                     <>
                       <li className="nav-item"><Link className="nav-link" to="/complaints">Manage Complaints</Link></li>
                       <li className="nav-item"><Link className="nav-link" to="/users">Manage Users</Link></li>
+                      <li className="nav-item"><Link className="nav-link" to="/admin-chats">Support Chats</Link></li>
                     </>
                   )}
                   <li className="nav-item ms-3">

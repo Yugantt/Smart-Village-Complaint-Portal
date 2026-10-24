@@ -31,7 +31,9 @@ exports.loginUser = async (req, res) => {
             return res.status(400).json({ success: false, message: "Please enter email and password" });
         }
 
-        const user = await User.findOne({ email });
+        // 👇 FIX: Added .select("+password") so bcrypt can read it
+        const user = await User.findOne({ email }).select("+password");
+        
         if (!user) {
             return res.status(401).json({ success: false, message: "Invalid email or password" });
         }

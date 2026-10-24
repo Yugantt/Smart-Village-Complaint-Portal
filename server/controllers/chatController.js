@@ -47,3 +47,49 @@ exports.getChatWithUser = async (req, res) => {
     res.status(500).json({ success: false, message: error.message });
   }
 };
+
+// NEW: Edit Message
+exports.editMessage = async (req, res) => {
+  try {
+    const { message } = req.body;
+    const chat = await Chat.findById(req.params.id);
+    
+    if (!chat) return res.status(404).json({ success: false, message: "Message not found" });
+
+    // Citizens can only edit their own messages
+    if (req.user.role === "citizen") {
+      if (chat.user.toString() !== req.user._id.toString() || chat.senderRole !== "citizen") {
+        return res.status(403).json({ success: false, message: "Not authorized to edit this message" });
+      }
+    }
+
+    chat.message = message;
+    chat.isEdited = true;
+    await chat.save();
+
+    res.status(200).json({ success: true, chat });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+};
+
+// NEW: Delete Message
+exports.deleteMessage = async (req, res) => {
+  try {
+    const chat = await Chat.findById(req.params.id);
+    
+    if (!chat) return res.status(404).json({ success: false, message: "Message not found" });
+
+    // Citizens can only delete their own messages
+    if (req.user.role === "citizen") {
+      if (chat.user.toString() !== req.user._id.toString() || chat.senderRole !== "citizen") {
+        return res.status(403).json({ success: false, message: "Not authorized to delete this message" });
+      }
+    }
+
+    await chat.deleteOne();
+    res.status(200).json({ success: true, message: "Message deleted" });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+};

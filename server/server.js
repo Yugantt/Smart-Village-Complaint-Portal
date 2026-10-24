@@ -28,10 +28,10 @@ app.use(express.json({ limit: "10kb" }));
 
 const limiter = rateLimit({
     windowMs: 15 * 60 * 1000,
-    max: 100,
+    max: 5000, 
     message: "Too many requests from this IP, please try again later."
 });
-app.use("/api", limiter);
+// app.use("/api", limiter); // DISABLED FOR LOCAL TESTING
 
 app.use("/uploads", express.static(require("path").join(__dirname, "uploads")));
 
